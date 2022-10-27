@@ -1,13 +1,25 @@
 import tkinter
+from tkinter import messagebox
 
 
 # Save Password Function
 def save():
-    with open('data.txt', 'a') as passwords:
-        passwords.write(
-            f'{email_entry.get()} | {website_entry.get()} | {password_entry.get()}\n')
-        website_entry.delete(0, tkinter.END)
-        password_entry.delete(0, tkinter.END)
+    website = website_entry.get()
+    email = email_entry.get()
+    password = password_entry.get()
+    if len(website) == 0 or len(password) == 0:
+        messagebox.showinfo(
+            title='oops', message="Please don't leave any fields empty!")
+    else:
+        is_ok = messagebox.askokcancel(
+            title=website, message=f'These are the details entered: \nEmail: {email} \nPassword: {password} \nIs it ok to save?')
+
+        if is_ok:
+            with open('data.txt', 'a') as passwords:
+                passwords.write(
+                    f'{email} | {website} | {password}\n')
+                website_entry.delete(0, tkinter.END)
+                password_entry.delete(0, tkinter.END)
 
 
 # Password Manager UI
