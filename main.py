@@ -68,6 +68,25 @@ def save():
                 website_entry.delete(0, tkinter.END)
                 password_entry.delete(0, tkinter.END)
 
+# Search for data
+
+
+def find_password():
+    website = website_entry.get()
+    try:
+        with open('data.json', 'r') as data_file:
+            password_data = json.load(data_file)
+            if website in password_data:
+                email = password_data[website]['email']
+                password = password_data[website]['password']
+                messagebox.showinfo(
+                    title=website, message=f"Email: {email} \nPassword: {password}")
+            elif website not in password_data:
+                messagebox.showinfo(
+                    title='Error', message='No details for the website exists.')
+    except FileNotFoundError:
+        messagebox.showinfo(title='Error', message='No Data File Found.')
+
 
 # Password Manager UI
 window = tkinter.Tk()
@@ -84,6 +103,8 @@ website_label.grid(row=1, column=0)
 website_entry = tkinter.Entry(width=35)
 website_entry.grid(row=1, column=1, columnspan=2)
 website_entry.focus()  # starts cursor at website entry
+website_search = tkinter.Button(text='Search', command=find_password, width=15)
+website_search.grid(row=1, column=2)
 
 email_label = tkinter.Label(text='Email/Username:')
 email_label.grid(row=2, column=0)
